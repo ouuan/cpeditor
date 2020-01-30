@@ -150,6 +150,7 @@ class AppWindow : public QMainWindow
     QStringList openFolder(const QString &path, bool cpp, bool java, bool python, int depth);
     void openContest(const QString &path, const QString &lang, int number);
     bool quit();
+    bool isUseHotExit();
 
     MainWindow *currentWindow();
     MainWindow *windowIndex(int index);

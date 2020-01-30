@@ -30,6 +30,7 @@
 #include <QProgressDialog>
 #include <QTimer>
 #include <QUrl>
+#include <singleapplication.h>
 
 AppWindow::AppWindow(bool noHotExit, QWidget *parent) : QMainWindow(parent), ui(new Ui::AppWindow)
 {
@@ -46,7 +47,7 @@ AppWindow::AppWindow(bool noHotExit, QWidget *parent) : QMainWindow(parent), ui(
     applySettings();
     onSettingsApplied();
 
-    if (!noHotExit && settingManager->isUseHotExit())
+    if (!noHotExit && isUseHotExit())
     {
         int length = settingManager->getNumberOfTabs();
 
@@ -438,7 +439,7 @@ void AppWindow::openContest(const QString &path, const QString &lang, int number
 bool AppWindow::quit()
 {
     settingManager->clearEditorStatus();
-    if (settingManager->isUseHotExit())
+    if (isUseHotExit())
     {
         if (ui->tabWidget->count() == 1 && windowIndex(0)->isUntitled() && !windowIndex(0)->isTextChanged())
         {
@@ -461,6 +462,12 @@ bool AppWindow::quit()
         on_actionClose_All_triggered();
         return ui->tabWidget->count() == 0;
     }
+}
+
+bool AppWindow::isUseHotExit()
+{
+    return settingManager->isUseHotExit() &&
+           static_cast<SingleApplication *>(QApplication::instance())->numberOfInstances() == 1;
 }
 
 /***************** ABOUT SECTION ***************************/
