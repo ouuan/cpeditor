@@ -1,6 +1,6 @@
 # CP Editor
 
-[![Build Status](https://travis-ci.org/coder3101/cp-editor.svg?branch=master)](https://travis-ci.org/coder3101/cp-editor)
+[![Build Status](https://travis-ci.org/ouuan/cp-editor.svg?branch=master)](https://travis-ci.org/ouuan/cp-editor)
 [![Latest Stable](https://img.shields.io/github/v/release/coder3101/cp-editor?label=latest%20stable)](https://github.com/coder3101/cp-editor/releases/latest)
 [![Latest Release](https://img.shields.io/github/v/release/coder3101/cp-editor?include_prereleases&label=latest%20release&sort=semver)](https://github.com/coder3101/cp-editor/releases)
 
