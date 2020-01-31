@@ -3,4 +3,4 @@
 	url = https://github.com/ouuan/QCodeEditor.git
 [submodule "third_party/singleapplication"]
 	path = third_party/singleapplication
-	url = https://github.com/itay-grudev/SingleApplication.git
+	url = https://github.com/ouuan/SingleApplication.git
