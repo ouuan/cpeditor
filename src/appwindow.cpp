@@ -700,8 +700,6 @@ void AppWindow::onEditorChanged()
 {
     if (currentWindow() != nullptr)
     {
-        setWindowTitle(currentWindow()->getTabTitle(true, false) + " - CP Editor");
-
         QMap<QString, QVector<int>> tabsByName;
 
         for (int t = 0; t < ui->tabWidget->count(); ++t)
@@ -716,6 +714,8 @@ void AppWindow::onEditorChanged()
                 ui->tabWidget->setTabText(index, windowIndex(index)->getTabTitle(tabs.size() > 1, true));
             }
         }
+
+        setWindowTitle(currentWindow()->getTabTitle(true, false) + " - CP Editor");
     }
 }
 
