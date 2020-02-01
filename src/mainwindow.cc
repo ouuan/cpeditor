@@ -556,6 +556,11 @@ void MainWindow::focusOnEditor()
     editor->setFocus();
 }
 
+QCodeEditor *MainWindow::getEditor()
+{
+    return editor;
+}
+
 void MainWindow::detachedExecution()
 {
     afterCompile = RunDetached;

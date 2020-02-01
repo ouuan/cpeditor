@@ -668,6 +668,14 @@ void AppWindow::onTabChanged(int index)
     disconnect(activeSplitterMoveConnection);
     disconnect(activeRightSplitterMoveConnection);
 
+    disconnect(activeIndentConnection);
+    disconnect(activeUnindentConnection);
+    disconnect(activeSwapLineUpConnection);
+    disconnect(activeSwapLineDownConnection);
+    disconnect(activeDeleteLineConnection);
+    disconnect(activeToggleCommentConnection);
+    disconnect(activeToggleBlockCommentConnection);
+
     auto tmp = windowIndex(index);
 
     setWindowTitle(tmp->getTabTitle(true, false) + " - CP Editor");
@@ -694,6 +702,19 @@ void AppWindow::onTabChanged(int index)
         connect(tmp->getSplitter(), SIGNAL(splitterMoved(int, int)), this, SLOT(onSplitterMoved(int, int)));
     activeRightSplitterMoveConnection =
         connect(tmp->getRightSplitter(), SIGNAL(splitterMoved(int, int)), this, SLOT(onRightSplitterMoved(int, int)));
+
+    activeIndentConnection = connect(ui->actionIndent, SIGNAL(triggered()), tmp->getEditor(), SLOT(indent()));
+    activeUnindentConnection = connect(ui->actionUnindent, SIGNAL(triggered()), tmp->getEditor(), SLOT(unindent()));
+    activeSwapLineUpConnection =
+        connect(ui->actionSwapLineUp, SIGNAL(triggered()), tmp->getEditor(), SLOT(swapLineUp()));
+    activeSwapLineDownConnection =
+        connect(ui->actionSwapLineDown, SIGNAL(triggered()), tmp->getEditor(), SLOT(swapLineDown()));
+    activeDeleteLineConnection =
+        connect(ui->actionDeleteLine, SIGNAL(triggered()), tmp->getEditor(), SLOT(deleteLine()));
+    activeToggleCommentConnection =
+        connect(ui->actionToggleComment, SIGNAL(triggered()), tmp->getEditor(), SLOT(toggleComment()));
+    activeToggleBlockCommentConnection =
+        connect(ui->actionToggleBlockComment, SIGNAL(triggered()), tmp->getEditor(), SLOT(toggleBlockComment()));
 }
 
 void AppWindow::onEditorChanged()

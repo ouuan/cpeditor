@@ -105,6 +105,8 @@ class MainWindow : public QMainWindow
 
     void focusOnEditor();
 
+    QCodeEditor *getEditor();
+
   private slots:
     void on_compile_clicked();
     void on_runOnly_clicked();

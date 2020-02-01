@@ -128,13 +128,22 @@ class AppWindow : public QMainWindow
     Ui::AppWindow *ui;
     MessageLogger *activeLogger = nullptr;
     QTimer *timer = nullptr;
-    QMetaObject::Connection activeSplitterMoveConnection;
-    QMetaObject::Connection activeRightSplitterMoveConnection;
-    QMetaObject::Connection companionEditorConnection;
     Settings::SettingManager *settingManager = nullptr;
     Telemetry::UpdateNotifier *updater = nullptr;
     PreferenceWindow *preferenceWindow = nullptr;
     Network::CompanionServer *server;
+
+    QMetaObject::Connection activeSplitterMoveConnection;
+    QMetaObject::Connection activeRightSplitterMoveConnection;
+    QMetaObject::Connection companionEditorConnection;
+
+    QMetaObject::Connection activeIndentConnection;
+    QMetaObject::Connection activeUnindentConnection;
+    QMetaObject::Connection activeSwapLineUpConnection;
+    QMetaObject::Connection activeSwapLineDownConnection;
+    QMetaObject::Connection activeDeleteLineConnection;
+    QMetaObject::Connection activeToggleCommentConnection;
+    QMetaObject::Connection activeToggleBlockCommentConnection;
 
     void setConnections();
     void allocate();
