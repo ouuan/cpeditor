@@ -467,7 +467,7 @@ bool AppWindow::quit()
 bool AppWindow::isUseHotExit()
 {
     return settingManager->isUseHotExit() &&
-           static_cast<SingleApplication *>(QApplication::instance())->numberOfInstances() == 1;
+           static_cast<SingleApplication *>(QApplication::instance())->isSingleInstance();
 }
 
 /***************** ABOUT SECTION ***************************/
