@@ -54,6 +54,8 @@ void Compiler::start(const QString &filePath, const QString &compileCommand, con
         return;
     }
 
+
+
     QString command;
 
     if (lang == "C++")
