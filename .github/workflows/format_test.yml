@@ -1,44 +1,11 @@
-name: "CI: Format Test"
-
-on:
-  push:
-    paths-ignore:
-      - '*.md'
-      - '*/*/*.md'
-  pull_request:
-    paths-ignore:
-      - '*.md'
-      - '*/*/*.md'
-
+on: push
+name: Format codes
 jobs:
-  checkformat:
-    name: "Check code format"
+  lint:
+    name: clang-format Code Formatter
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-
-    - name: Check code format
-      uses: DoozyX/clang-format-lint-action@v0.5
-      id: check-format
-      with:
-        exclude: './third_party'
-        clangFormatVersion: 9
-
-    - name: Format codes
-      if: failure()
+    - name: Clang Code Formatter
       uses: antoinealb/clang-format-action@clang9
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Commit files
-      if: failure()
-      run: |
-        git config --local user.email "clang-format-bot@cpeditor"
-        git config --local user.name "CP Editor Clang Format bot"
-        git commit -m "style: Format codes" -a
-
-    - name: Push changes
-      if: failure()
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
