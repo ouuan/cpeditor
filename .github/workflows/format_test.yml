@@ -16,7 +16,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+
     - uses: DoozyX/clang-format-lint-action@v0.5
+      id: check-format
       with:
         exclude: './third_party'
         clangFormatVersion: 9
+
+    - name: test
+      if: failure()
+      run: echo test
+
+    - name: test2
+      run: echo test2
