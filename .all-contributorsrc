@@ -1,0 +1,24 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "ouuan",
+      "name": "Yufan You",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/30581822?v=4",
+      "profile": "https://ouuan.github.io",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "cpeditor",
+  "projectOwner": "ouuan",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
