@@ -1,0 +1,26 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "coder3101",
+      "name": "Ashar",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/22212259?v=4",
+      "profile": "https://github.com/coder3101",
+      "contributions": [
+        "maintenance",
+        "doc",
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "cpeditor",
+  "projectOwner": "ouuan",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
