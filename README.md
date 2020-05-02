@@ -78,7 +78,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="https://ouuan.github.io"><img src="https://avatars2.githubusercontent.com/u/30581822?v=4" width="100px;" alt=""/><br /><sub><b>Yufan You</b></sub></a><br /><a href="https://github.com/ouuan/cpeditor/commits?author=ouuan" title="Code">💻</a></td>
+    <td align="center"><a href="https://ouuan.github.io"><img src="https://avatars2.githubusercontent.com/u/30581822?v=4" width="100px;" alt=""/><br /><sub><b>Yufan You</b></sub></a><br /><a href="https://github.com/ouuan/cpeditor/commits?author=ouuan" title="Code">💻</a> <a href="#maintenance-ouuan" title="Maintenance">🚧</a> <a href="https://github.com/ouuan/cpeditor/commits?author=ouuan" title="Documentation">📖</a></td>
   </tr>
 </table>
 
