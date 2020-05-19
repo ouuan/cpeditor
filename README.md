@@ -12,6 +12,7 @@ It makes your competitive coding life easier :grin: by automating many things fo
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-35-orange.svg)](#contributors-sparkles)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fouuan%2Fcpeditor.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fouuan%2Fcpeditor?ref=badge_shield)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ce0f297f31f74485b0d340949d08d605)](https://www.codacy.com/gh/cpeditor/cpeditor)
 [![GitHub All Releases](https://img.shields.io/github/downloads/cpeditor/cpeditor/total?label=downloads%40all)](https://github.com/cpeditor/cpeditor/releases)
@@ -208,3 +209,7 @@ License
 ----
 
 [GNU General Public License Version 3.0](https://github.com/cpeditor/cpeditor/blob/master/LICENSE)
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fouuan%2Fcpeditor.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fouuan%2Fcpeditor?ref=badge_large)
