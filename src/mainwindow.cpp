@@ -103,7 +103,7 @@ MainWindow::~MainWindow()
     delete fileWatcher;
     delete editor;
     if (fakevimHandler != nullptr)
-        delete fakevimHandler;
+        fakevimHandler->deleteLater();
     delete log;
 }
 
@@ -620,7 +620,7 @@ void MainWindow::applySettings(const QString &pagePath, bool shouldPerformDigoni
 
             if (SettingsHelper::isFakeVimEnable())
             {
-                fakevimHandler = new FakeVim::Internal::FakeVimHandler(editor, this);
+                fakevimHandler = new FakeVim::Internal::FakeVimHandler(editor);
 
                 Core::FakeVimProxy::connectSignals(fakevimHandler, editor, this, appWindow);
                 Core::FakeVimProxy::initHandler(fakevimHandler);
@@ -1167,12 +1167,6 @@ bool MainWindow::closeConfirm()
     }
     LOG_INFO(BOOL_INFO_OF(confirmed));
     return confirmed;
-}
-
-void MainWindow::closeWindow()
-{
-    fakevimHandler->disconnectFromEditor();
-    emit requestWindowClose(this);
 }
 
 void MainWindow::on_clearMessagesButton_clicked()
