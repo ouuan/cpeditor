@@ -2893,36 +2893,12 @@ You can learn about it by running `yapf --style-help`.</source>
         <translation>下列文件由于没有匹配而未加载：%1。你可以在 %2 设置匹配规则。</translation>
     </message>
     <message>
-        <source>Remove Empty</source>
-        <translation>删除空测试点</translation>
-    </message>
-    <message>
-        <source>Remove All</source>
-        <translation>删除全部测试点</translation>
-    </message>
-    <message>
         <source>Clear Testcases</source>
         <translation>清除测试点</translation>
     </message>
     <message>
         <source>Are you sure you want to delete all test cases?</source>
         <translation>你确定要删除所有测试点吗？</translation>
-    </message>
-    <message>
-        <source>Hide AC</source>
-        <translation>隐藏已通过的测试点</translation>
-    </message>
-    <message>
-        <source>Show All</source>
-        <translation>显示所有测试点</translation>
-    </message>
-    <message>
-        <source>Hide All</source>
-        <translation>隐藏所有测试点</translation>
-    </message>
-    <message>
-        <source>Invert</source>
-        <translation>反转显示状态</translation>
     </message>
     <message>
         <source>Ignore trailing spaces</source>
@@ -2991,6 +2967,34 @@ You can learn about it by running `yapf --style-help`.</source>
     <message>
         <source>Unaccepted / Accepted / Total</source>
         <translation>未通过 / 通过 / 总计</translation>
+    </message>
+    <message>
+        <source>Check All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uncheck All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check Opposite</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uncheck Accepted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Empty</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Checked</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

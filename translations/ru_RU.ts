@@ -2901,36 +2901,12 @@ You can learn about it by running `yapf --style-help`.</source>
         <translation>Следующие файлы не загружаются, потому что они не совпадают:%1. Можно установить правила соответствия в %2.</translation>
     </message>
     <message>
-        <source>Remove Empty</source>
-        <translation>Удалить пустые</translation>
-    </message>
-    <message>
-        <source>Remove All</source>
-        <translation>Удалить всё</translation>
-    </message>
-    <message>
         <source>Clear Testcases</source>
         <translation>Очистить тесткейсы</translation>
     </message>
     <message>
         <source>Are you sure you want to delete all test cases?</source>
         <translation>Вы уверены удалить все тесткейсы?</translation>
-    </message>
-    <message>
-        <source>Hide AC</source>
-        <translation>Скрыть Полные решения</translation>
-    </message>
-    <message>
-        <source>Show All</source>
-        <translation>Показать всё</translation>
-    </message>
-    <message>
-        <source>Hide All</source>
-        <translation>Скрыть всё</translation>
-    </message>
-    <message>
-        <source>Invert</source>
-        <translation>Инвертировать</translation>
     </message>
     <message>
         <source>Ignore trailing spaces</source>
@@ -2999,6 +2975,34 @@ You can learn about it by running `yapf --style-help`.</source>
     <message>
         <source>Unaccepted / Accepted / Total</source>
         <translation>Не принято / Принято / Всего</translation>
+    </message>
+    <message>
+        <source>Check All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uncheck All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check Opposite</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uncheck Accepted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Empty</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Checked</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
