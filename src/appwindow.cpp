@@ -33,6 +33,7 @@
 #include "Telemetry/UpdateChecker.hpp"
 #include "Util/FileUtil.hpp"
 #include "Util/Util.hpp"
+#include "Widgets/SupportUsDialog.hpp"
 #include "generated/SettingsHelper.hpp"
 #include "generated/portable.hpp"
 #include "generated/version.hpp"
@@ -601,13 +602,7 @@ int AppWindow::getNewUntitledIndex()
 
 void AppWindow::on_actionSupportUs_triggered() // NOLINT: It can be made static
 {
-    auto *dialog = new QMessageBox(this);
-    dialog->setTextFormat(Qt::MarkdownText);
-    dialog->setAttribute(Qt::WA_DeleteOnClose);
-    dialog->setModal(true);
-    dialog->setWindowTitle(tr("Support us"));
-    dialog->setText(
-        Util::readFile(QString(":/DONATE%1.md").arg(Core::Translator::langSuffix())).replace("resources/", ":/"));
+    auto *dialog = new SupportUsDialog(this);
     dialog->show();
 }
 
