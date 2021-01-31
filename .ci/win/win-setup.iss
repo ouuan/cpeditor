@@ -6,6 +6,9 @@
 ; MyAppVersion = App Version
 ; MyProjectRoot = Source root
 ; Arch = x86 or x64
+; Winlibs = true or false
+
+#include "environment.iss"
 
 #define MyAppName "CP Editor"
 #define MyAppPublisher "Ashar Khan <coder3101>"
@@ -33,6 +36,7 @@ SetupIconFile={#MyProjectRoot}\assets\icon.ico
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
+ChangesEnvironment=yes
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -49,6 +53,8 @@ Source: "{#MyOutRoot}\imageformats\*"; DestDir: "{app}\imageformats\"; Flags: ig
 Source: "{#MyOutRoot}\platforms\*"; DestDir: "{app}\platforms\"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "{#MyOutRoot}\styles\*"; DestDir: "{app}\styles\"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "{#MyOutRoot}\*.dll"; DestDir: "{app}"; Flags: ignoreversion
+
+Source: "{#MyOutRoot}\mingw64\*"; DestDir: "{app}\mingw64\"; Check: isWinlibsIncluded; Flags: ignoreversion recursesubdirs createallsubdirs
 
 ; VC++ redistributable runtime. Extracted by VC2019RedistNeedsInstall(), if needed.
 Source: "{#MyOutRoot}\Redist\vc_redist.{#Arch}.exe"; DestDir: {tmp}; Flags: dontcopy
@@ -86,4 +92,22 @@ begin
   begin
     ExtractTemporaryFile('vc_redist.{#Arch}.exe');
   end;
+end;
+
+function isWinlibsIncluded: Boolean;
+begin
+  if (CompareStr({#Winlibs}, 'true')) then Result := True;
+  else Result := False;
+end;
+
+procedure CurStepChanged(CurStep: TSetupStep);
+begin
+    if CurStep = ssPostInstall and isWinlibsIncluded then
+    EnvAddPath(ExpandConstant('{app}') +'\mingw64');
+end;
+
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+begin
+    if CurUninstallStep = usPostUninstall and isWinlibsIncluded then
+    EnvRemovePath(ExpandConstant('{app}') +'\mingw64');
 end;
