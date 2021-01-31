@@ -13,7 +13,7 @@ env:
 
 jobs:
   release:
-    name: "release on ${{ matrix.config.os }} ${{ matrix.config.arch }} with portable ${{ matrix.config.portable-option }}"
+    name: "OS: ${{ matrix.config.os }} Arch: ${{ matrix.config.arch }} Portable: ${{ matrix.config.portable-option }} Winlibs: ${{ matrix.config.winlibs }}"
     runs-on: "${{ matrix.config.os }}"
     strategy:
       fail-fast: false
@@ -21,8 +21,10 @@ jobs:
         config:
           - os: "ubuntu-16.04"
             portable-option: "Off"
+            winlibs: false
           - os: "macos-latest"
             portable-option: "Off"
+            winlibs: false
           - os: "windows-latest"
             arch: x64
             platform: x64
@@ -59,6 +61,7 @@ jobs:
             filename-suffix: "setup-with-gcc.exe"
             winlibs: true
             winlibs-arch: x86_64-posix-seh
+            mingw-arch: mingw64
           - os: "windows-latest"
             arch: x64
             platform: x64
@@ -67,6 +70,7 @@ jobs:
             filename-suffix: "portable-with-gcc.zip"
             winlibs: true
             winlibs-arch: x86_64-posix-seh
+            mingw-arch: mingw64
           - os: "windows-latest"
             arch: x86
             platform: Win32
@@ -75,6 +79,7 @@ jobs:
             filename-suffix: "setup-with-gcc.exe"
             winlibs: true
             winlibs-arch: i686-posix-dwarf
+            mingw-arch: mingw32
           - os: "windows-latest"
             arch: x86
             platform: Win32
@@ -83,6 +88,7 @@ jobs:
             filename-suffix: "portable-with-gcc.zip"
             winlibs: true
             winlibs-arch: i686-posix-dwarf
+            mingw-arch: mingw32
 
     steps:
       - uses: actions/checkout@v2
@@ -124,7 +130,7 @@ jobs:
             echo ::set-output name=ISBETA::true
           fi
 
-      - name: Pack to AppImage
+      - name: "[Linux] Pack to AppImage"
         if: startsWith(matrix.config.os, 'ubuntu')
         run: |
           sudo apt install libxcb*
@@ -137,7 +143,7 @@ jobs:
           ./linuxdeployqt*.AppImage ./cpeditor -appimage -qmake=../../Qt/${{ env.QT_VERSION }}/gcc_64/bin/qmake
           mv CP_Editor-${{steps.get_version.outputs.VERSION }}-x86_64.AppImage cpeditor-${{ steps.get_version.outputs.VERSION }}-linux-x86_64.AppImage
 
-      - name: Release AppImage
+      - name: "[Linux] Release AppImage"
         if: startsWith(matrix.config.os, 'ubuntu')
         uses: softprops/action-gh-release@v1
         with:
@@ -148,7 +154,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Pack to deb
+      - name: "[Linux] Pack to deb"
         if: startsWith(matrix.config.os, 'ubuntu')
         id: deb-package
         run: |
@@ -194,7 +200,7 @@ jobs:
           cd ${{ github.workspace }}/
           fakeroot dpkg-deb --build ${pkgname}
 
-      - name: Release deb
+      - name: "[Linux] Release deb"
         if: startsWith(matrix.config.os, 'ubuntu')
         uses: softprops/action-gh-release@v1
         with:
@@ -205,7 +211,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Package full Source
+      - name: "[Linux] Package full Source"
         if: startsWith(matrix.config.os, 'ubuntu')
         run: |
           shopt -s extglob # enable "!(...)"
@@ -215,7 +221,7 @@ jobs:
           wget https://raw.githubusercontent.com/Kentzo/git-archive-all/master/git_archive_all.py
           python3 git_archive_all.py cpeditor-${{ steps.get_version.outputs.VERSION }}-full-source.tar.gz --extra=.git/HEAD --extra=.git/refs --extra=.git/objects
 
-      - name: Release full source
+      - name: "[Linux] Release full source"
         if: startsWith(matrix.config.os, 'ubuntu')
         uses: softprops/action-gh-release@v1
         with:
@@ -265,16 +271,16 @@ jobs:
 
       - name: "[Windows] Download Winlibs"
         if: startsWith(matrix.config.os, 'windows') && matrix.config.winlibs
-        uses: Legion2/download-release-action@v2.1.0
+        uses: robinraju/release-downloader@v1
         with:
           repository: brechtsanders/winlibs_mingw
           tag: ${{ steps.winlibs.outputs.tag }}
-          file: ${{ steps.winlibs.outputs.asset }}
+          fileName: ${{ steps.winlibs.outputs.asset }}
 
       - name: "[Windows] Extract Winlibs"
         if: startsWith(matrix.config.os, 'windows') && matrix.config.winlibs
         shell: bash
-        run: 7z x ${{ steps.winlibs.outputs.asset }} -o build/out
+        run: 7z x ${{ steps.winlibs.outputs.asset }} -obuild/out
 
       - name: "[Windows] Pack to installer"
         if: startsWith(matrix.config.os, 'windows') && matrix.config.portable-option == 'Off'
@@ -282,8 +288,14 @@ jobs:
         run: |
           mkdir build/out/Redist
           cp "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Redist/MSVC/$VC_REDIST_VERSION/vc_redist.${{ matrix.config.arch }}.exe" build/out/Redist
-          iscc .ci/win/win-setup.iss -DArch=${{ matrix.config.arch }} -DWinlibs=${{ matrix.config.winlibs }} -DMyAppVersion=${{ steps.get_version.outputs.VERSION }} -DMyProjectRoot=$(pwd) -DMyOutRoot=$(pwd)/build/out -DVC_REDIST_VERSION=$VC_REDIST_VERSION
-          mv cpeditor-${{ steps.get_version.outputs.VERSION }}-${{ matrix.config.arch }}-setup.exe cpeditor-${{ steps.get_version.outputs.VERSION }}-windows-${{ matrix.config.arch }}-${{ matrix.config.filename-suffix }}
+          iscc .ci/win/win-setup.iss \
+            -DArch=${{ matrix.config.arch }} \
+            $([[ "${{ matrix.config.winlibs }}" == "true" ]] && echo '-DGccDir=${{ matrix.config.mingw-arch }}' || echo '') \
+            -DMyAppVersion=${{ steps.get_version.outputs.VERSION }} \
+            -DMyProjectRoot=$(pwd) \
+            -DMyOutRoot=$(pwd)/build/out \
+            -DVC_REDIST_VERSION=$VC_REDIST_VERSION
+          mv cpeditor-setup.exe cpeditor-${{ steps.get_version.outputs.VERSION }}-windows-${{ matrix.config.arch }}-${{ matrix.config.filename-suffix }}
 
       - name: "[Windows] Pack to portable"
         if: startsWith(matrix.config.os, 'windows') && matrix.config.portable-option == 'On'
