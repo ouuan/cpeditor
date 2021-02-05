@@ -21,7 +21,7 @@ jobs:
         config:
           - os: "ubuntu-16.04"
             portable-option: "Off"
-          - os: "macos-latest"
+          - os: "macos-11.0"
             portable-option: "Off"
           - os: "windows-latest"
             arch: x64
