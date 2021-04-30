@@ -33,7 +33,7 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - os: "ubuntu-16.04"
+          - os: "ubuntu-18.04"
             portable-option: "Off"
           - os: "macos-latest"
             portable-option: "Off"
