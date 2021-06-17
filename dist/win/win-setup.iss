@@ -32,7 +32,6 @@ OutputDir={#MyProjectRoot}
 OutputBaseFilename=cpeditor-setup
 SetupIconFile={#MyProjectRoot}\assets\icon.ico
 Compression=lzma
-SolidCompression=yes
 WizardStyle=modern
 ChangesEnvironment=yes
 
