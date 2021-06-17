@@ -31,8 +31,7 @@ PrivilegesRequiredOverridesAllowed=dialog
 OutputDir={#MyProjectRoot}
 OutputBaseFilename=cpeditor-setup
 SetupIconFile={#MyProjectRoot}\assets\icon.ico
-Compression=lzma
-SolidCompression=yes
+Compression=lzma2
 WizardStyle=modern
 ChangesEnvironment=yes
 
