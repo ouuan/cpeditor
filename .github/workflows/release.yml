@@ -12,9 +12,27 @@ env:
   WINLIBS_MINGW: 9.0.0-r2
 
 jobs:
+  # "env" is only available in jobs, we need to convert them to outputs so that they can be used in the matrix
+  get-winlibs-outputs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get winlibs outputs
+        id: get
+        run: |
+          echo ::set-output name=GCC::$WINLIBS_GCC
+          echo ::set-output name=LLVM::$WINLIBS_LLVM
+          echo ::set-output name=MINGW::$WINLIBS_MINGW
+          echo ::set-output name=tag::$WINLIBS_GCC-$WINLIBS_LLVM-$WINLIBS_MINGW
+    outputs:
+      GCC: ${{ steps.get.outputs.GCC }}
+      LLVM: ${{ steps.get.outputs.LLVM }}
+      MINGW: ${{ steps.get.outputs.MINGW }}
+      tag: ${{ steps.get.outputs.tag }}
+
   release:
     name: "OS: ${{ matrix.config.os }} Arch: ${{ matrix.config.arch }} Portable: ${{ matrix.config.portable-option }} Winlibs: ${{ matrix.config.winlibs }}"
     runs-on: "${{ matrix.config.os }}"
+    needs: get-winlibs-outputs
     strategy:
       fail-fast: false
       matrix:
@@ -58,7 +76,7 @@ jobs:
             platform: x64
             qtarch: win64_msvc2019_64
             portable-option: "Off"
-            filename-suffix: "setup-with-gcc-${{ env.WINLIBS_GCC }}-LLVM-${{ env.WINLIBS_LLVM }}.exe"
+            filename-suffix: "setup-with-gcc-${{ needs.get-winlibs-outputs.outputs.GCC }}-LLVM-${{ needs.get-winlibs-outputs.outputs.LLVM }}.exe"
             winlibs: true
             winlibs-arch: x86_64-posix-seh
             mingw-arch: mingw64
@@ -67,7 +85,7 @@ jobs:
             platform: x64
             qtarch: win64_msvc2019_64
             portable-option: "On"
-            filename-suffix: "setup-with-gcc-${{ env.WINLIBS_GCC }}-LLVM-${{ env.WINLIBS_LLVM }}.zip"
+            filename-suffix: "setup-with-gcc-${{ needs.get-winlibs-outputs.outputs.GCC }}-LLVM-${{ needs.get-winlibs-outputs.outputs.LLVM }}.zip"
             winlibs: true
             winlibs-arch: x86_64-posix-seh
             mingw-arch: mingw64
@@ -76,7 +94,7 @@ jobs:
             platform: Win32
             qtarch: win32_msvc2019
             portable-option: "Off"
-            filename-suffix: "setup-with-gcc-${{ env.WINLIBS_GCC }}-LLVM-${{ env.WINLIBS_LLVM }}.exe"
+            filename-suffix: "setup-with-gcc-${{ needs.get-winlibs-outputs.outputs.GCC }}-LLVM-${{ needs.get-winlibs-outputs.outputs.LLVM }}.exe"
             winlibs: true
             winlibs-arch: i686-posix-dwarf
             mingw-arch: mingw32
@@ -85,7 +103,7 @@ jobs:
             platform: Win32
             qtarch: win32_msvc2019
             portable-option: "On"
-            filename-suffix: "setup-with-gcc-${{ env.WINLIBS_GCC }}-LLVM-${{ env.WINLIBS_LLVM }}.zip"
+            filename-suffix: "setup-with-gcc-${{ needs.get-winlibs-outputs.outputs.GCC }}-LLVM-${{ needs.get-winlibs-outputs.outputs.LLVM }}.zip"
             winlibs: true
             winlibs-arch: i686-posix-dwarf
             mingw-arch: mingw32
@@ -265,14 +283,14 @@ jobs:
         if: startsWith(matrix.config.os, 'windows') && matrix.config.winlibs
         id: winlibs
         shell: bash
-        run: echo "::set-output name=asset::winlibs-${{ matrix.config.winlibs-arch }}-gcc-${{ env.WINLIBS_GCC }}-llvm-${{ env.WINLIBS_LLVM }}-mingw-w64-${{ env.WINLIBS_MINGW }}.7z"
+        run: echo "::set-output name=asset::winlibs-${{ matrix.config.winlibs-arch }}-gcc-${{ needs.get-winlibs-outputs.outputs.GCC }}-llvm-${{ needs.get-winlibs-outputs.outputs.LLVM }}-mingw-w64-${{ needs.get-winlibs-outputs.outputs.MINGW }}.7z"
 
       - name: "[Windows] Download Winlibs"
         if: startsWith(matrix.config.os, 'windows') && matrix.config.winlibs
         uses: robinraju/release-downloader@v1
         with:
           repository: brechtsanders/winlibs_mingw
-          tag: ${{ env.WINLIBS_GCC }}-${{ env.WINLIBS_LLVM }}-${{ env.WINLIBS_MINGW }}
+          tag: ${{ needs.get-winlibs-outputs.outputs.tag }}
           fileName: ${{ steps.winlibs.outputs.asset }}
 
       - name: "[Windows] Extract Winlibs"
