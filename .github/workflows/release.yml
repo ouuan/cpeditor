@@ -7,36 +7,24 @@ on:
 
 env:
   QT_VERSION: 5.15.2
+  WINLIBS_GCC: 11.1.0
+  WINLIBS_LLVM: 12.0.0
+  WINLIBS_MINGW: 9.0.0-r2
 
 jobs:
-  get-winlibs-versions:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get Winlibs versions
-        id: get
-        run: |
-          tag=$(curl https://api.github.com/repos/brechtsanders/winlibs_mingw/releases/latest | jq -r .tag_name)
-          echo "::set-output name=tag-name::$tag"
-          echo "::set-output name=gcc-version::$(echo $tag | cut -d'-' -f 1)"
-          echo "::set-output name=mingw-version::$(echo $tag | rev | cut -d'-' -f -2 | rev)"
-    outputs:
-      tag-name: ${{ steps.get.outputs.tag-name }}
-      gcc-version: ${{ steps.get.outputs.gcc-version }}
-      mingw-version: ${{ steps.get.outputs.mingw-version }}
-
   release:
     name: "OS: ${{ matrix.config.os }} Arch: ${{ matrix.config.arch }} Portable: ${{ matrix.config.portable-option }} Winlibs: ${{ matrix.config.winlibs }}"
     runs-on: "${{ matrix.config.os }}"
-    needs:
-      - get-winlibs-versions
     strategy:
       fail-fast: false
       matrix:
         config:
           - os: "ubuntu-18.04"
             portable-option: "Off"
+            winlibs: false
           - os: "macos-latest"
             portable-option: "Off"
+            winlibs: false
           - os: "windows-latest"
             arch: x64
             platform: x64
@@ -70,7 +58,7 @@ jobs:
             platform: x64
             qtarch: win64_msvc2019_64
             portable-option: "Off"
-            filename-suffix: "setup-with-gcc-${{ needs.get-winlibs-versions.outputs.gcc-version }}.exe"
+            filename-suffix: "setup-with-gcc-${{ env.WINLIBS_GCC }}-LLVM-${{ env.WINLIBS_LLVM }}.exe"
             winlibs: true
             winlibs-arch: x86_64-posix-seh
             mingw-arch: mingw64
@@ -79,7 +67,7 @@ jobs:
             platform: x64
             qtarch: win64_msvc2019_64
             portable-option: "On"
-            filename-suffix: "portable-with-gcc-${{ needs.get-winlibs-versions.outputs.gcc-version }}.zip"
+            filename-suffix: "setup-with-gcc-${{ env.WINLIBS_GCC }}-LLVM-${{ env.WINLIBS_LLVM }}.zip"
             winlibs: true
             winlibs-arch: x86_64-posix-seh
             mingw-arch: mingw64
@@ -88,7 +76,7 @@ jobs:
             platform: Win32
             qtarch: win32_msvc2019
             portable-option: "Off"
-            filename-suffix: "setup-with-gcc-${{ needs.get-winlibs-versions.outputs.gcc-version }}.exe"
+            filename-suffix: "setup-with-gcc-${{ env.WINLIBS_GCC }}-LLVM-${{ env.WINLIBS_LLVM }}.exe"
             winlibs: true
             winlibs-arch: i686-posix-dwarf
             mingw-arch: mingw32
@@ -97,7 +85,7 @@ jobs:
             platform: Win32
             qtarch: win32_msvc2019
             portable-option: "On"
-            filename-suffix: "portable-with-gcc-${{ needs.get-winlibs-versions.outputs.gcc-version }}.zip"
+            filename-suffix: "setup-with-gcc-${{ env.WINLIBS_GCC }}-LLVM-${{ env.WINLIBS_LLVM }}.zip"
             winlibs: true
             winlibs-arch: i686-posix-dwarf
             mingw-arch: mingw32
@@ -277,14 +265,14 @@ jobs:
         if: startsWith(matrix.config.os, 'windows') && matrix.config.winlibs
         id: winlibs
         shell: bash
-        run: echo "::set-output name=asset::winlibs-${{ matrix.config.winlibs-arch }}-gcc-${{ needs.get-winlibs-versions.outputs.gcc-version }}-mingw-w64-${{ needs.get-winlibs-versions.outputs.mingw-version }}.7z"
+        run: echo "::set-output name=asset::winlibs-${{ matrix.config.winlibs-arch }}-gcc-${{ env.WINLIBS_GCC }}-llvm-${{ env.WINLIBS_LLVM }}-mingw-w64-${{ env.WINLIBS_MINGW }}.7z"
 
       - name: "[Windows] Download Winlibs"
         if: startsWith(matrix.config.os, 'windows') && matrix.config.winlibs
         uses: robinraju/release-downloader@v1
         with:
           repository: brechtsanders/winlibs_mingw
-          tag: ${{ needs.get-winlibs-versions.outputs.tag-name }}
+          tag: ${{ env.WINLIBS_GCC }}-${{ env.WINLIBS_LLVM }}-${{ env.WINLIBS_MINGW }}
           fileName: ${{ steps.winlibs.outputs.asset }}
 
       - name: "[Windows] Extract Winlibs"
