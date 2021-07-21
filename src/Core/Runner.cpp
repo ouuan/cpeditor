@@ -82,6 +82,12 @@ void Runner::run(const QString &tmpFilePath, const QString &sourceFilePath, cons
     connect(runProcess, &QProcess::readyReadStandardOutput, this, &Runner::onReadyReadStandardOutput);
     connect(runProcess, &QProcess::readyReadStandardError, this, &Runner::onReadyReadStandardError);
 
+    QString program = command.takeFirst();
+
+    setWorkingDirectory(tmpFilePath, sourceFilePath, lang);
+
+    processInput = input.toUtf8();
+
     killTimer = new QTimer(runProcess);
     killTimer->setSingleShot(true);
     killTimer->setInterval(timeLimit);
@@ -91,12 +97,6 @@ void Runner::run(const QString &tmpFilePath, const QString &sourceFilePath, cons
 
     killTimer->start();
     runTimer->start();
-
-    QString program = command.takeFirst();
-
-    setWorkingDirectory(tmpFilePath, sourceFilePath, lang);
-
-    processInput = input;
 
     runProcess->start(program, command);
 }
@@ -143,16 +143,16 @@ void Runner::runDetached(const QString &tmpFilePath, const QString &sourceFilePa
 
 void Runner::onFinished(int exitCode, QProcess::ExitStatus exitStatus)
 {
+    const auto timeUsed = runTimer->elapsed();
     emit runFinished(runnerIndex, processStdout + runProcess->readAllStandardOutput(),
-                     processStderr + runProcess->readAllStandardError(), exitCode, runTimer->elapsed(),
-                     timeLimitExceeded);
+                     processStderr + runProcess->readAllStandardError(), exitCode, timeUsed, timeLimitExceeded);
 }
 
 void Runner::onStarted()
 {
     if (!isDetachedRun)
     {
-        runProcess->write(processInput.toUtf8());
+        runProcess->write(processInput);
         runProcess->closeWriteChannel();
     }
     emit runStarted(runnerIndex);
